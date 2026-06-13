@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-neutral: #2E2E2E;
+  --color-lime: #CEF739;
+  --color-dark-lime: #283300;
+  --color-green: #42EB05;
+  --color-red: #FF4141;
+
+  /* FONTS */
+  /* --font-mono: "JetBrains Mono", sans-serif; */
+
+  /* FONT SIZE */
+  --text-2xl: 40px;
+  --text-2xl--line-height: 100%;
+  --text-2xl--letter-spacing: -0.5px;
+
+  --text-xl: 32px;
+  --text-xl--line-height: 100%;
+  --text-xl--letter-spacing: -0.5px;
+
+  --text-lg: 20px;
+  --text-lg--line-height: 140%;
+  --text-lg--letter-spacing: -0.5px;
+
+
+  --text-md: 16px;
+  --text-md--line-height: 120%;
+  --text-md--letter-spacing: 1px;
+
+  --text-base: 14px;
+  --text-base--line-height: 120%;
+  --text-base--letter-spacing: 1px;
+
+
+  --text-sm: 12px;
+  --text-sm--line-height: 120%;
+  --text-sm--letter-spacing: 0.5px;
+
+
+  --text-xs: 10px;
+  --text-xs--line-height: 100%;
+  --text-xs--letter-spacing: 0px;
+}
+
+:root {}
+
+
+body {
+  font-family: 'JetBrains Mono', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {}
+}
