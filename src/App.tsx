@@ -1,18 +1,19 @@
-import { GlobeIcon } from "lucide-react";
-import { CurrencyPair, Header } from "./components";
+// import { GlobeIcon } from "lucide-react";
+import { Combobox, CurrencyPair, Header } from "./components";
 
-import {
-  Combobox,
-  ComboboxCollection,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxGroup,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxLabel,
-  ComboboxList,
-} from "./components/ui/combobox";
-import { InputGroupAddon } from "./components/ui/input-group";
+// import {
+//   Combobox,
+//   ComboboxCollection,
+//   ComboboxContent,
+//   ComboboxEmpty,
+//   ComboboxGroup,
+//   ComboboxInput,
+//   ComboboxItem,
+//   ComboboxLabel,
+//   ComboboxList,
+// } from "./components/ui/combobox";
+// import { InputGroupAddon } from "./components/ui/input-group";
+// import { getCountries } from "./lib/utils";
 
 const timezones = [
   {
@@ -78,13 +79,15 @@ const App = () => {
           <h1 className="uppercase text-white text-lg">check the rate</h1>
           {/* main currency card container*/}
           <div className="flex flex-col gap-5 md:flex-row w-full bg-neutral-700 rounded-xl p-5">
-            {/* left currency container */}
-            <div className="bg-neutral-800 border border-neutral-300 rounded-lg flex justify-between items-end p-5">
+            {/* currency container */}
+            <div className="bg-neutral-600 border border-neutral-500 rounded-lg flex justify-between items-end py-5 px-2 sm:p-5">
               <div className="space-y-5">
                 <h2 className="text-md uppercase">send</h2>
                 <p className="text-xl font-bold text-white">1,000</p>
               </div>
-              <Combobox items={timezones}>
+              <Combobox />
+
+              {/* <Combobox items={timezones}>
                 <ComboboxInput placeholder="Select a timezone">
                   <InputGroupAddon>
                     <GlobeIcon />
@@ -107,7 +110,7 @@ const App = () => {
                     )}
                   </ComboboxList>
                 </ComboboxContent>
-              </Combobox>
+              </Combobox> */}
             </div>
           </div>
         </section>
