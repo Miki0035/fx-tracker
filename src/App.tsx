@@ -56,23 +56,23 @@ const App = () => {
       <Header />
       <main>
         <section className="w-full flex items-center justify-start bg-neutral-700 overflow-hidden">
-          <div className="py-1 px-3 bg-lime-500 text-sm">
+          <div className="z-10 py-1 px-3 bg-lime-500 text-sm">
             <p className="w-full flex items-center uppercase gap-2  text-neutral-900 font-semibold">
               <span className="md:text-2xl"> · </span> live markets
             </p>
           </div>
-          <CurrencyPair
-            firstCurrency="USD"
-            secondCurrency="JPY"
-            price={157.91}
-            rateChange={0.04}
-          />
-          <CurrencyPair
-            firstCurrency="GBP"
-            secondCurrency="USD"
-            price={1.3575}
-            rateChange={-0.22}
-          />
+          <ul className="flex w-full animate-infinite-scroll">
+            {Array.from({ length: 15 }, (_, index) => (
+              <li key={index}>
+                <CurrencyPair
+                  firstCurrency="USD"
+                  secondCurrency="JPY"
+                  price={12.91 * index}
+                  rateChange={index % 2 === 0 ? -0.04 : 0.04}
+                />
+              </li>
+            ))}
+          </ul>
         </section>
         <section className="w-full max-w-4xl mx-auto p-5">
           <h1 className="uppercase text-white text-lg">check the rate</h1>
