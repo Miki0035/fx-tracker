@@ -80,7 +80,7 @@ const App = () => {
           {/* main currency card container*/}
           <div className="flex flex-col gap-5 md:flex-row w-full bg-neutral-700 rounded-xl p-5">
             {/* currency container */}
-            <div className="bg-neutral-600 border border-neutral-500 rounded-lg flex justify-between items-end py-5 px-2 sm:p-5">
+            <div className="w-full max-w-lg bg-neutral-600 border border-neutral-500 rounded-lg flex justify-between items-end py-5 px-2 sm:p-5">
               <div className="space-y-5">
                 <h2 className="text-md uppercase">send</h2>
                 <p className="text-xl font-bold text-white">1,000</p>
