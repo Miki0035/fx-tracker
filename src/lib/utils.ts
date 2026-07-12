@@ -1,3 +1,4 @@
+import type { CountryCurrency } from "@/types"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -5,13 +6,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export interface CountryCurrency {
-  name: string
-  code: string
-  currencyName: string
-  currencySymbol: string
-  flag: string
-}
 
 const getFlagUrl = (fileName: string) =>
   new URL(`../assets/images/flags/${fileName}`, import.meta.url).href
@@ -20,8 +14,8 @@ export function getCountries(): CountryCurrency[] {
   return [
     {
       name: "United Arab Emirates",
-      code: "AE",
-      currencyName: "United Arab Emirates Dirham",
+      code: "AED",
+      currencyName: "UAE Dirham",
       currencySymbol: "\u062f.\u0625",
       flag: getFlagUrl("ae.webp"),
     },
