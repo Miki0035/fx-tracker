@@ -4,7 +4,21 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowUnusedLabels": false, // checks if object property name is wrong
+    "noUncheckedSideEffectImports": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowUnreachableCode": false,
+    "noPropertyAccessFromIndexSignature": true, // force correct property name to be used
+    "erasableSyntaxOnly": true, // changes your typescript code
+    "noImplicitOverride": true, // shows that u are overriding a method
+    "noErrorTruncation": true, // shows errors on red sguggly lines
+    "exactOptionalPropertyTypes": true // forces an optional type can't be undefined for optional property
+
+    // "allowJs": true, // u can use javascript code inside your typescript file
+    // "checkJs": true // checks your javascript code types
   },
   "references": [
     { "path": "./tsconfig.app.json" },
