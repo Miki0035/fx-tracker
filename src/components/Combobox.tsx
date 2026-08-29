@@ -1,20 +1,23 @@
-import { cn, getCountries } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import upArrow from "../assets/images/icon-chevron-up.svg";
 import { Search } from "lucide-react";
 import CategoryList from "./CategoryList";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
-import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { searchCurrency } from "@/store/reducers/currencyReducer";
+import { useAppDispatch } from "@/hooks/hooks";
+import type { CountryCurrency, ToBeChangedCurrency } from "@/types";
+import { setSearchValue } from "@/store/currency/currencySlice";
 
-const Combobox = () => {
-  // Redux state
-  const selectedCurrency = useAppSelector(
-    (state) => state.currency.selectedCurrency,
-  );
-  const allCurrencies = useAppSelector(
-    (state) => state.currency.allCountryCurrencies,
-  );
+interface Props {
+  sendSelectedCurrency: CountryCurrency;
+  sendFilterCurrencies: CountryCurrency[];
+  direction: "send" | "recieve";
+}
 
+const Combobox = ({
+  sendSelectedCurrency,
+  sendFilterCurrencies,
+  direction,
+}: Props) => {
   // Redux state changer method
   const dispatch = useAppDispatch();
 
@@ -39,7 +42,11 @@ const Combobox = () => {
   }, []);
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    dispatch(searchCurrency(event.target.value));
+    const sendSearch: ToBeChangedCurrency = {
+      direction,
+      value: event.target.value,
+    };
+    dispatch(setSearchValue(sendSearch));
   };
 
   return (
@@ -52,17 +59,17 @@ const Combobox = () => {
       >
         <img
           className="size-6 bg-transparent"
-          src={selectedCurrency.flag}
-          alt={selectedCurrency.currencyName}
+          src={sendSelectedCurrency.flag}
+          alt={sendSelectedCurrency.currencyName}
         />
-        <span>{selectedCurrency.code}</span>
+        <span>{sendSelectedCurrency.code}</span>
         <img src={upArrow} alt="up chevron" />
       </button>
       {/* DROPDOWN */}
       <div
         ref={dropDownRef}
         className={cn(
-          `w-full max-w-120 absolute top-30 right-0 bg-neutral-600 border border-neutral-400 rounded-lg  p-2 transition-opacity`,
+          `w-full max-w-120 z-50 absolute top-30 right-0 bg-neutral-600 border border-neutral-400 rounded-lg  p-2 transition-opacity`,
           showDropdown
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none",
@@ -80,9 +87,10 @@ const Combobox = () => {
         </div>
         {/* Popular */}
         <CategoryList
-          currencies={allCurrencies}
+          currencies={sendFilterCurrencies}
           category="popular"
-          count={getCountries().slice(3).length}
+          count={sendFilterCurrencies.length}
+          direction={direction}
         />
 
         {/* Other currencies */}

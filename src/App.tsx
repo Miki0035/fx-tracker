@@ -1,6 +1,24 @@
+import { ArrowUpDown } from "lucide-react";
 import { Combobox, CurrencyPair, Header } from "./components";
+import { useAppSelector } from "./hooks/hooks";
+import {
+  recieveSelectedQueriedCurrencies,
+  sendSelectedQueriedCurrencies,
+} from "./store/currency/currencySelector";
 
 const App = () => {
+  const sendSelectedCurrency = useAppSelector(
+    (state) => state.currency.sendSelectedCurrency,
+  );
+
+  const sendAllCurrencies = useAppSelector(sendSelectedQueriedCurrencies);
+
+  const recieveSelectedCurrency = useAppSelector(
+    (state) => state.currency.recieveSelectedCurrency,
+  );
+
+  const recieveAllCurrencies = useAppSelector(recieveSelectedQueriedCurrencies);
+
   return (
     <>
       <Header />
@@ -26,7 +44,7 @@ const App = () => {
         </section>
         <section className="w-full max-w-4xl mx-auto p-5">
           <h1 className="uppercase text-white text-lg">check the rate</h1>
-          {/* main currency card container*/}
+          {/* SEND main currency card container*/}
           <div className="flex flex-col gap-5 md:flex-row w-full bg-neutral-700 rounded-xl p-5">
             {/* currency container */}
             <div className="relative w-full max-w-lg bg-neutral-600 border border-neutral-500 rounded-lg flex justify-between items-end py-5 px-2 sm:p-5">
@@ -34,32 +52,34 @@ const App = () => {
                 <h2 className="text-md uppercase">send</h2>
                 <p className="text-xl font-bold text-white">1,000</p>
               </div>
-              <Combobox />
+              <Combobox
+                sendSelectedCurrency={sendSelectedCurrency}
+                sendFilterCurrencies={sendAllCurrencies}
+                direction="send"
+              />
+            </div>
 
-              {/* <Combobox items={timezones}>
-                <ComboboxInput placeholder="Select a timezone">
-                  <InputGroupAddon>
-                    <GlobeIcon />
-                  </InputGroupAddon>
-                </ComboboxInput>
-                <ComboboxContent alignOffset={-28} className="w-60">
-                  <ComboboxEmpty>No timezones found.</ComboboxEmpty>
-                  <ComboboxList>
-                    {(group) => (
-                      <ComboboxGroup key={group.value} items={group.items}>
-                        <ComboboxLabel>{group.value}</ComboboxLabel>
-                        <ComboboxCollection>
-                          {(item) => (
-                            <ComboboxItem key={item} value={item}>
-                              {item}
-                            </ComboboxItem>
-                          )}
-                        </ComboboxCollection>
-                      </ComboboxGroup>
-                    )}
-                  </ComboboxList>
-                </ComboboxContent>
-              </Combobox> */}
+            {/* UP DOWN ARROW */}
+            <div className="mx-auto">
+              <div className="p-3 bg-neutral-600 rounded-md border border-neutral-500">
+                <ArrowUpDown className="text-white" />
+              </div>
+            </div>
+          </div>
+
+          {/* RECIEVE main currency card container*/}
+          <div className="flex flex-col gap-5 md:flex-row w-full bg-neutral-700 rounded-xl p-5">
+            {/* currency container */}
+            <div className="relative w-full max-w-lg bg-neutral-600 border border-neutral-500 rounded-lg flex justify-between items-end py-5 px-2 sm:p-5">
+              <div className="space-y-5">
+                <h2 className="text-md uppercase">Recieve</h2>
+                <p className="text-xl font-bold text-white">1,000</p>
+              </div>
+              <Combobox
+                sendSelectedCurrency={recieveSelectedCurrency}
+                sendFilterCurrencies={recieveAllCurrencies}
+                direction="recieve"
+              />
             </div>
           </div>
         </section>
