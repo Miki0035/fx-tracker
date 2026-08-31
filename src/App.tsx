@@ -1,5 +1,14 @@
-import { ArrowUpDown, StarIcon } from "lucide-react";
-import { Combobox, CurrencyPair, FavoriteCard, Header } from "./components";
+import { ArrowRight, ArrowUpDown, StarIcon, TrashIcon } from "lucide-react";
+import {
+  Combobox,
+  CompareCard,
+  CompareSectionTab,
+  CurrencyPair,
+  FavoriteSectionTab,
+  Header,
+  LogConversionCard,
+  LogConversionSectionTab,
+} from "./components";
 import { useAppSelector } from "./hooks/hooks";
 import {
   recieveSelectedQueriedCurrencies,
@@ -19,8 +28,10 @@ const App = () => {
   const recieveSelectedCurrency = useAppSelector(
     (state) => state.currency.recieveSelectedCurrency,
   );
-
   const recieveAllCurrencies = useAppSelector(recieveSelectedQueriedCurrencies);
+
+  const tabs = useAppSelector((state) => state.tab.tabs);
+  const currentTab = useAppSelector((state) => state.tab.currentTab);
 
   return (
     <>
@@ -118,21 +129,20 @@ const App = () => {
           <section className="w-full py-10">
             {/* MENU TABS / SELECT */}
             {/* CONTENT */}
-            <div className="p-2 rounded-lg bg-neutral-700">
-              {/* FAVORITE */}
-              <div className="w-full py-3 flex justify-between items-center">
-                <h3 className="text-white uppercase">pinned pairs</h3>
-                <p className="text-neutral-200 text-sm">Favorites</p>
-              </div>
-              {/* CARD */}
-              <FavoriteCard
+            <section className="p-2 rounded-lg bg-neutral-700">
+              <FavoriteSectionTab
+                iconClassname="stroke-lime-500 fill-lime-500"
                 sendCurrencyCode={sendSelectedCurrency.code}
                 recieveCurrencyCode={recieveSelectedCurrency.code}
-                iconClassname="stroke-lime-500 fill-lime-500"
-                priceRate="0.86"
-                icon={upArrow}
+                priceRate=".86"
               />
-            </div>
+              <CompareSectionTab currency={sendSelectedCurrency} />
+
+              <LogConversionSectionTab
+                sendCurrency={sendSelectedCurrency}
+                recieveCurrency={recieveSelectedCurrency}
+              />
+            </section>
           </section>
         </section>
       </main>
