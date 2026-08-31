@@ -1,22 +1,30 @@
-import { ArrowRight, ArrowUpDown, StarIcon, TrashIcon } from "lucide-react";
+import { ArrowUpDown, StarIcon } from "lucide-react";
 import {
   Combobox,
-  CompareCard,
   CompareSectionTab,
   CurrencyPair,
   FavoriteSectionTab,
   Header,
-  LogConversionCard,
   LogConversionSectionTab,
 } from "./components";
-import { useAppSelector } from "./hooks/hooks";
+import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import {
   recieveSelectedQueriedCurrencies,
   sendSelectedQueriedCurrencies,
 } from "./store/currency/currencySelector";
 
-import upArrow from "@/assets/images/icon-chevron-up.svg";
-import downArrow from "@/assets/images/icon-chevron-down.svg";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { changeTab } from "./store/tab/tabSlice";
+
+// import upArrow from "@/assets/images/icon-chevron-up.svg";
+// import downArrow from "@/assets/images/icon-chevron-down.svg";
 
 const App = () => {
   const sendSelectedCurrency = useAppSelector(
@@ -32,6 +40,8 @@ const App = () => {
 
   const tabs = useAppSelector((state) => state.tab.tabs);
   const currentTab = useAppSelector((state) => state.tab.currentTab);
+
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -128,20 +138,53 @@ const App = () => {
           {/* TABS SECTION */}
           <section className="w-full py-10">
             {/* MENU TABS / SELECT */}
+            <Select
+              value={currentTab.index.toString()}
+              onValueChange={(value) => {
+                const selectedTab = tabs.find(
+                  (tab) => tab.index === Number(value),
+                );
+                if (selectedTab) {
+                  dispatch(changeTab(selectedTab));
+                }
+              }}
+            >
+              <SelectTrigger className="w-full rounded-md! mb-5 p-5 bg-neutral-700 border border-neutral-300 text-white uppercase text-md sm:hidden">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-neutral-700 ">
+                <SelectGroup>
+                  {tabs.map((tab) => (
+                    <SelectItem
+                      className="text-md accent-none uppercase text-white py-2"
+                      key={tab.index}
+                      value={tab.index.toString()}
+                    >
+                      {tab.label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
             {/* CONTENT */}
             <section className="p-2 rounded-lg bg-neutral-700">
-              <FavoriteSectionTab
-                iconClassname="stroke-lime-500 fill-lime-500"
-                sendCurrencyCode={sendSelectedCurrency.code}
-                recieveCurrencyCode={recieveSelectedCurrency.code}
-                priceRate=".86"
-              />
-              <CompareSectionTab currency={sendSelectedCurrency} />
-
-              <LogConversionSectionTab
-                sendCurrency={sendSelectedCurrency}
-                recieveCurrency={recieveSelectedCurrency}
-              />
+              {currentTab.index === 0 ? (
+                <></>
+              ) : currentTab.index === 1 ? (
+                <FavoriteSectionTab
+                  iconClassname="stroke-lime-500 fill-lime-500"
+                  sendCurrencyCode={sendSelectedCurrency.code}
+                  recieveCurrencyCode={recieveSelectedCurrency.code}
+                  priceRate=".86"
+                />
+              ) : currentTab.index === 2 ? (
+                <CompareSectionTab currency={sendSelectedCurrency} />
+              ) : (
+                <LogConversionSectionTab
+                  sendCurrency={sendSelectedCurrency}
+                  recieveCurrency={recieveSelectedCurrency}
+                />
+              )}
             </section>
           </section>
         </section>
