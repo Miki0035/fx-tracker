@@ -140,7 +140,7 @@ const App = () => {
             {/* MENU TABS / SELECT */}
             <Select
               value={currentTab.index.toString()}
-              onValueChange={(value) => {
+              onChange={(value) => {
                 const selectedTab = tabs.find(
                   (tab) => tab.index === Number(value),
                 );
