@@ -139,24 +139,25 @@ const App = () => {
           <section className="w-full py-10">
             {/* MENU TABS / SELECT */}
             <Select
-              value={currentTab.index.toString()}
+              defaultValue={currentTab.label}
+              className={`w-full`}
+              aria-label="Select tab"
+              value={currentTab.index}
               onChange={(value) => {
-                const selectedTab = tabs.find(
-                  (tab) => tab.index === Number(value),
-                );
+                const selectedTab = tabs.find((tab) => tab.index === value);
                 if (selectedTab) {
                   dispatch(changeTab(selectedTab));
                 }
               }}
             >
-              <SelectTrigger className="w-full rounded-md! mb-5 p-5 bg-neutral-700 border border-neutral-300 text-white uppercase text-md sm:hidden">
+              <SelectTrigger className="rounded-md mb-5 py-5 bg-neutral-700 border border-neutral-300 text-white uppercase text-sm sm:text-md sm:hidden">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-neutral-700 ">
+              <SelectContent className="bg-neutral-700">
                 <SelectGroup>
                   {tabs.map((tab) => (
                     <SelectItem
-                      className="text-md accent-none uppercase text-white py-2"
+                      className="accent-none uppercase text-white py-3"
                       key={tab.index}
                       value={tab.index.toString()}
                     >
