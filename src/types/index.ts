@@ -6,3 +6,9 @@ export interface CountryCurrency {
     flag: string
 }
 
+
+
+export interface ToBeChangedCurrency {
+    value: string;
+    direction: "send" | "recieve";
+}
