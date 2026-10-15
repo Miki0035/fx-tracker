@@ -1,8 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Inter+Mono:ital,wght@0,100..800;1,100..800&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
+@import "@fontsource-variable/jetbrains-mono";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -69,13 +71,13 @@
 }
 
 body {
-  font-family: 'JetBrains Mono', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', 'JetBrains Mono', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--color-neutral-900);
   color: var(--color-neutral-200);
 }
 
 @theme inline {
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-mono);
   --font-sans: 'Geist Variable', sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -115,6 +117,7 @@ body {
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --font-mono: 'JetBrains Mono Variable', monospace;
 }
 
 :root {
@@ -196,8 +199,8 @@ body {
   }
 
   html {
-    @apply font-sans;
-  } */
+    @apply font-mono;
+  }
 
   .border {
     @apply bg-neutral-600 border border-neutral-500 rounded-lg
@@ -206,5 +209,4 @@ body {
   .border-highlight {
     @apply border border-2 border-lime-500
   }
-
 }

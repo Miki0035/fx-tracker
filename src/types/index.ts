@@ -12,3 +12,8 @@ export interface ToBeChangedCurrency {
     value: string;
     direction: "send" | "recieve";
 }
+
+export type TabType = {
+    label: string;
+    index: number;
+}

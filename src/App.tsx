@@ -1,13 +1,30 @@
 import { ArrowUpDown, StarIcon } from "lucide-react";
-import { Combobox, CurrencyPair, FavoriteCard, Header } from "./components";
-import { useAppSelector } from "./hooks/hooks";
+import {
+  Combobox,
+  CompareSectionTab,
+  CurrencyPair,
+  FavoriteSectionTab,
+  Header,
+  LogConversionSectionTab,
+} from "./components";
+import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import {
   recieveSelectedQueriedCurrencies,
   sendSelectedQueriedCurrencies,
 } from "./store/currency/currencySelector";
 
-import upArrow from "@/assets/images/icon-chevron-up.svg";
-import downArrow from "@/assets/images/icon-chevron-down.svg";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { changeTab } from "./store/tab/tabSlice";
+
+// import upArrow from "@/assets/images/icon-chevron-up.svg";
+// import downArrow from "@/assets/images/icon-chevron-down.svg";
 
 const App = () => {
   const sendSelectedCurrency = useAppSelector(
@@ -19,8 +36,12 @@ const App = () => {
   const recieveSelectedCurrency = useAppSelector(
     (state) => state.currency.recieveSelectedCurrency,
   );
-
   const recieveAllCurrencies = useAppSelector(recieveSelectedQueriedCurrencies);
+
+  const tabs = useAppSelector((state) => state.tab.tabs);
+  const currentTab = useAppSelector((state) => state.tab.currentTab);
+
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -117,22 +138,95 @@ const App = () => {
           {/* TABS SECTION */}
           <section className="w-full py-10">
             {/* MENU TABS / SELECT */}
-            {/* CONTENT */}
-            <div className="p-2 rounded-lg bg-neutral-700">
-              {/* FAVORITE */}
-              <div className="w-full py-3 flex justify-between items-center">
-                <h3 className="text-white uppercase">pinned pairs</h3>
-                <p className="text-neutral-200 text-sm">Favorites</p>
-              </div>
-              {/* CARD */}
-              <FavoriteCard
-                sendCurrencyCode={sendSelectedCurrency.code}
-                recieveCurrencyCode={recieveSelectedCurrency.code}
-                iconClassname="stroke-lime-500 fill-lime-500"
-                priceRate="0.86"
-                icon={upArrow}
-              />
+            <select
+              name=""
+              id=""
+              className={`w-full border p-2 text-white outline-none mb-5 sm:hidden`}
+              onChange={(e) => {
+                const index = Number(e.target.value);
+                const selectedTab = tabs.find((tab) => tab.index === index);
+                if (selectedTab) {
+                  dispatch(changeTab(selectedTab));
+                }
+              }}
+            >
+              {tabs.map((tab) => (
+                <option
+                  className="accent-none uppercase text-white py-3"
+                  key={tab.index}
+                  value={tab.index.toString()}
+                >
+                  {tab.label}
+                </option>
+              ))}
+            </select>
+
+            {/* LARGE SCREEN TAB BAR */}
+            <div className="w-full flex justify-start items-center gap-10 mb-5 border-b-1 border-neutral-600">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.index}
+                  className={`${currentTab.index === tab.index ? "border-b-2 border-lime-300" : ""}
+                  text-white py-5 text-md uppercase
+                  `}
+                  onClick={(e) => dispatch(changeTab(tab))}
+                >
+                  {tab.label}{" "}
+                  <span className="rounded-full w-12 h-12 text-lime-500 bg-lime-800 p-2">
+                    8
+                  </span>
+                </button>
+              ))}
             </div>
+            {/* <Select
+              defaultValue={currentTab.label}
+              className={`w-full`}
+              aria-label="Select tab"
+              value={currentTab.index}
+              onChange={(value) => {
+                const selectedTab = tabs.find((tab) => tab.index === value);
+                if (selectedTab) {
+                  dispatch(changeTab(selectedTab));
+                }
+              }}
+            >
+              <SelectTrigger className="rounded-md mb-5 py-5 bg-neutral-700 border border-neutral-300 text-white uppercase text-sm sm:text-md sm:hidden">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-neutral-700">
+                <SelectGroup>
+                  {tabs.map((tab) => (
+                    <SelectItem
+                      className="accent-none uppercase text-white py-3"
+                      key={tab.index}
+                      value={tab.index.toString()}
+                    >
+                      {tab.label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select> */}
+            {/* CONTENT */}
+            <section className="p-2 rounded-lg bg-neutral-700">
+              {currentTab.index === 0 ? (
+                <></>
+              ) : currentTab.index === 1 ? (
+                <FavoriteSectionTab
+                  iconClassname="stroke-lime-500 fill-lime-500"
+                  sendCurrencyCode={sendSelectedCurrency.code}
+                  recieveCurrencyCode={recieveSelectedCurrency.code}
+                  priceRate=".86"
+                />
+              ) : currentTab.index === 2 ? (
+                <CompareSectionTab currency={sendSelectedCurrency} />
+              ) : (
+                <LogConversionSectionTab
+                  sendCurrency={sendSelectedCurrency}
+                  recieveCurrency={recieveSelectedCurrency}
+                />
+              )}
+            </section>
           </section>
         </section>
       </main>

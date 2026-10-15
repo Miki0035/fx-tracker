@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import currencyReducer from "@/store/currency/currencySlice";
+import tabReducer from "@/store/tab/tabSlice";
 
 
 export const store = configureStore({
     reducer: {
-        currency: currencyReducer
+        currency: currencyReducer,
+        tab: tabReducer
     }
 })
 
