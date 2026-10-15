@@ -69,7 +69,7 @@ const Combobox = ({
       <div
         ref={dropDownRef}
         className={cn(
-          `w-full max-w-120 z-50 absolute top-30 right-0 bg-neutral-600 border border-neutral-400 rounded-lg  p-2 transition-opacity`,
+          `w-full max-w-100 z-50 absolute top-30 right-0 bg-neutral-600 border border-neutral-400 rounded-lg  p-2 transition-opacity`,
           showDropdown
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none",

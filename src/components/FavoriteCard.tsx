@@ -16,7 +16,7 @@ const FavoriteCard = ({
   recieveCurrencyCode,
 }: Props) => {
   return (
-    <div className="w-full bg-neutral-600 p-2 md:p-5 border border-neutral-500 rounded-lg  flex justify-between items-center">
+    <div className="w-full  p-2 md:p-5 border flex justify-between items-center transition-colors hover:border-lime-500 hover:border-2">
       <div className="w-full flex gap-2 uppercase">
         {sendCurrencyCode} <ArrowRight /> {recieveCurrencyCode}
       </div>
