@@ -200,4 +200,12 @@ body {
   html {
     @apply font-mono;
   }
+
+  .border {
+    @apply bg-neutral-600 border border-neutral-500 rounded-lg
+  }
+
+  .border-highlight {
+    @apply border border-2 border-lime-500
+  }
 }

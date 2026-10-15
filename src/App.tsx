@@ -138,7 +138,47 @@ const App = () => {
           {/* TABS SECTION */}
           <section className="w-full py-10">
             {/* MENU TABS / SELECT */}
-            <Select
+            <select
+              name=""
+              id=""
+              className={`w-full border p-2 text-white outline-none mb-5 sm:hidden`}
+              onChange={(e) => {
+                const index = Number(e.target.value);
+                const selectedTab = tabs.find((tab) => tab.index === index);
+                if (selectedTab) {
+                  dispatch(changeTab(selectedTab));
+                }
+              }}
+            >
+              {tabs.map((tab) => (
+                <option
+                  className="accent-none uppercase text-white py-3"
+                  key={tab.index}
+                  value={tab.index.toString()}
+                >
+                  {tab.label}
+                </option>
+              ))}
+            </select>
+
+            {/* LARGE SCREEN TAB BAR */}
+            <div className="w-full flex justify-start items-center gap-10 mb-5 border-b-1 border-neutral-600">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.index}
+                  className={`${currentTab.index === tab.index ? "border-b-2 border-lime-300" : ""}
+                  text-white py-5 text-md uppercase
+                  `}
+                  onClick={(e) => dispatch(changeTab(tab))}
+                >
+                  {tab.label}{" "}
+                  <span className="rounded-full w-12 h-12 text-lime-500 bg-lime-800 p-2">
+                    8
+                  </span>
+                </button>
+              ))}
+            </div>
+            {/* <Select
               defaultValue={currentTab.label}
               className={`w-full`}
               aria-label="Select tab"
@@ -166,7 +206,7 @@ const App = () => {
                   ))}
                 </SelectGroup>
               </SelectContent>
-            </Select>
+            </Select> */}
             {/* CONTENT */}
             <section className="p-2 rounded-lg bg-neutral-700">
               {currentTab.index === 0 ? (
