@@ -7,6 +7,8 @@ import CompareCard from "./CompareCard";
 import CompareSectionTab from "./CompareSectionTab";
 import LogConversionCard from "./LogConversionCard";
 import LogConversionSectionTab from "./LogConversionSectionTab";
+import HistorySectionTab from "./HistorySectionTab";
+import HistoryCard from "./HistoryCard";
 export {
     Header,
     CurrencyPair,
@@ -16,5 +18,7 @@ export {
     CompareCard,
     CompareSectionTab,
     LogConversionCard,
-    LogConversionSectionTab
+    LogConversionSectionTab,
+    HistorySectionTab,
+    HistoryCard
 }

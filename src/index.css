@@ -203,10 +203,10 @@ body {
   }
 
   .border {
-    @apply bg-neutral-600 border border-neutral-500 rounded-lg
+    @apply bg-neutral-700 border border-neutral-600
   }
 
-  .border-highlight {
+  /* .border-highlight {
     @apply border border-2 border-lime-500
-  }
+  } */
 }

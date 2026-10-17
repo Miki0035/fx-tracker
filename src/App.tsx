@@ -5,6 +5,7 @@ import {
   CurrencyPair,
   FavoriteSectionTab,
   Header,
+  HistorySectionTab,
   LogConversionSectionTab,
 } from "./components";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
@@ -162,7 +163,7 @@ const App = () => {
             </select>
 
             {/* LARGE SCREEN TAB BAR */}
-            <div className="w-full flex justify-start items-center gap-10 mb-5 border-b-1 border-neutral-600">
+            <div className="hidden w-full sm:flex justify-start items-center gap-10 mb-5 border-b-1 border-neutral-600">
               {tabs.map((tab) => (
                 <button
                   key={tab.index}
@@ -208,9 +209,9 @@ const App = () => {
               </SelectContent>
             </Select> */}
             {/* CONTENT */}
-            <section className="p-2 rounded-lg bg-neutral-700">
+            <section className="p-2">
               {currentTab.index === 0 ? (
-                <></>
+                <HistorySectionTab />
               ) : currentTab.index === 1 ? (
                 <FavoriteSectionTab
                   iconClassname="stroke-lime-500 fill-lime-500"
