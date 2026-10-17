@@ -1,8 +1,13 @@
 import HistoryCard from "./HistoryCard";
+import TradingChart from "./TradingChart";
 
-const HistorySectionTab = () => {
+interface Props {
+  className: string;
+}
+
+const HistorySectionTab = ({ className }: Props) => {
   return (
-    <div className="w-full">
+    <div className={`${className} w-full`}>
       {/* CARD CONTAINER */}
       <div className="w-full flex justify-start sm:justify-center  items-center md:justify-start flex-wrap gap-4">
         <HistoryCard label="open" value="0.8516" />
@@ -12,9 +17,7 @@ const HistorySectionTab = () => {
       </div>
 
       {/* TRADING CHART CONTAINER + DATES */}
-      <div className="w-full">
-        <div className="border rounded-lg"></div>
-      </div>
+      <TradingChart />
     </div>
   );
 };

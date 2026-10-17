@@ -7,6 +7,7 @@ interface Props {
   iconClassname: string;
   sendCurrencyCode: string;
   recieveCurrencyCode: string;
+  className: string;
 }
 
 const FavoriteSectionTab = ({
@@ -14,9 +15,10 @@ const FavoriteSectionTab = ({
   recieveCurrencyCode,
   iconClassname,
   priceRate,
+  className,
 }: Props) => {
   return (
-    <>
+    <div className={className}>
       {/* FAVORITE */}
       <div className="w-full py-3 flex justify-between items-center">
         <h4 className="text-white uppercase">pinned pairs</h4>
@@ -30,7 +32,7 @@ const FavoriteSectionTab = ({
         priceRate={priceRate}
         icon={upArrow}
       />
-    </>
+    </div>
   );
 };
 

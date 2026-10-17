@@ -14,14 +14,6 @@ import {
   sendSelectedQueriedCurrencies,
 } from "./store/currency/currencySelector";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { changeTab } from "./store/tab/tabSlice";
 
 // import upArrow from "@/assets/images/icon-chevron-up.svg";
@@ -142,7 +134,7 @@ const App = () => {
             <select
               name=""
               id=""
-              className={`w-full border p-2 text-white outline-none mb-5 sm:hidden`}
+              className={`w-full border px-5 py-2 text-white outline-none mb-5 rounded-lg sm:hidden`}
               onChange={(e) => {
                 const index = Number(e.target.value);
                 const selectedTab = tabs.find((tab) => tab.index === index);
@@ -170,7 +162,7 @@ const App = () => {
                   className={`${currentTab.index === tab.index ? "border-b-2 border-lime-300" : ""}
                   text-white py-5 text-md uppercase
                   `}
-                  onClick={(e) => dispatch(changeTab(tab))}
+                  onClick={() => dispatch(changeTab(tab))}
                 >
                   {tab.label}{" "}
                   <span className="rounded-full w-12 h-12 text-lime-500 bg-lime-800 p-2">
@@ -209,24 +201,45 @@ const App = () => {
               </SelectContent>
             </Select> */}
             {/* CONTENT */}
-            <section className="p-2">
-              {currentTab.index === 0 ? (
-                <HistorySectionTab />
-              ) : currentTab.index === 1 ? (
-                <FavoriteSectionTab
-                  iconClassname="stroke-lime-500 fill-lime-500"
-                  sendCurrencyCode={sendSelectedCurrency.code}
-                  recieveCurrencyCode={recieveSelectedCurrency.code}
-                  priceRate=".86"
-                />
-              ) : currentTab.index === 2 ? (
-                <CompareSectionTab currency={sendSelectedCurrency} />
-              ) : (
-                <LogConversionSectionTab
-                  sendCurrency={sendSelectedCurrency}
-                  recieveCurrency={recieveSelectedCurrency}
-                />
-              )}
+            <section className="relative p-2">
+              <HistorySectionTab
+                className={`absolute inset-0 transition-opacity duration-300 ${
+                  currentTab.index === 0
+                    ? "opacity-100 pointer-events-auto"
+                    : "opacity-0 pointer-events-none"
+                }`}
+              />
+
+              <CompareSectionTab
+                currency={sendSelectedCurrency}
+                className={` inset-0 transition-opacity duration-300 ${
+                  currentTab.index === 1
+                    ? "opacity-100 pointer-events-auto"
+                    : "opacity-0 pointer-events-none"
+                }`}
+              />
+
+              <FavoriteSectionTab
+                className={`absolute inset-0 transition-opacity duration-300 ${
+                  currentTab.index === 2
+                    ? "opacity-100 pointer-events-auto"
+                    : "opacity-0 pointer-events-none"
+                }`}
+                iconClassname="stroke-lime-500 fill-lime-500"
+                sendCurrencyCode={sendSelectedCurrency.code}
+                recieveCurrencyCode={recieveSelectedCurrency.code}
+                priceRate=".86"
+              />
+
+              <LogConversionSectionTab
+                className={`absolute inset-0 transition-opacity duration-300 ${
+                  currentTab.index === 3
+                    ? "opacity-100 pointer-events-auto"
+                    : "opacity-0 pointer-events-none"
+                }`}
+                sendCurrency={sendSelectedCurrency}
+                recieveCurrency={recieveSelectedCurrency}
+              />
             </section>
           </section>
         </section>

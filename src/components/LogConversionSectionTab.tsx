@@ -4,11 +4,16 @@ import type { CountryCurrency } from "@/types";
 interface Props {
   sendCurrency: CountryCurrency;
   recieveCurrency: CountryCurrency;
+  className: string;
 }
 
-const LogConversionSectionTab = ({ sendCurrency, recieveCurrency }: Props) => {
+const LogConversionSectionTab = ({
+  sendCurrency,
+  recieveCurrency,
+  className,
+}: Props) => {
   return (
-    <>
+    <div className={`${className}`}>
       <div className="w-full py-3 uppercase flex justify-between items-end">
         <div className="flex flex-col items-start">
           <h4 className="text-white">Conversion log</h4>
@@ -28,7 +33,7 @@ const LogConversionSectionTab = ({ sendCurrency, recieveCurrency }: Props) => {
         sendCurrency={sendCurrency}
         recieveCurrency={recieveCurrency}
       />
-    </>
+    </div>
   );
 };
 

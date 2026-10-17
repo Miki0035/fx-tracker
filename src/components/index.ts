@@ -9,6 +9,7 @@ import LogConversionCard from "./LogConversionCard";
 import LogConversionSectionTab from "./LogConversionSectionTab";
 import HistorySectionTab from "./HistorySectionTab";
 import HistoryCard from "./HistoryCard";
+import TradingChart from "./TradingChart";
 export {
     Header,
     CurrencyPair,
@@ -20,5 +21,6 @@ export {
     LogConversionCard,
     LogConversionSectionTab,
     HistorySectionTab,
-    HistoryCard
+    HistoryCard,
+    TradingChart
 }
