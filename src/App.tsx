@@ -1,8 +1,8 @@
 import { ArrowUpDown, StarIcon } from "lucide-react";
 import {
+  Banner,
   Combobox,
   CompareSectionTab,
-  CurrencyPair,
   FavoriteSectionTab,
   Header,
   HistorySectionTab,
@@ -10,11 +10,13 @@ import {
 } from "./components";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import {
+  fetchLiveRating,
   recieveSelectedQueriedCurrencies,
   sendSelectedQueriedCurrencies,
 } from "./store/currency/currencySelector";
 
 import { changeTab } from "./store/tab/tabSlice";
+import { useEffect } from "react";
 
 // import upArrow from "@/assets/images/icon-chevron-up.svg";
 // import downArrow from "@/assets/images/icon-chevron-down.svg";
@@ -36,29 +38,18 @@ const App = () => {
 
   const dispatch = useAppDispatch();
 
+  // live rates
+  const liveRates = useAppSelector((state) => state.currency.liveRates);
+
+  useEffect(() => {
+    dispatch(fetchLiveRating());
+  }, [dispatch]);
+
   return (
     <>
       <Header />
       <main>
-        <section className="w-full flex items-center justify-start bg-neutral-700 overflow-hidden">
-          <div className="z-10 py-1 px-3 bg-lime-500 text-sm">
-            <p className="w-full flex items-center uppercase gap-2  text-neutral-900 font-semibold">
-              <span className="md:text-2xl"> · </span> live markets
-            </p>
-          </div>
-          <ul className="flex w-full animate-infinite-scroll">
-            {Array.from({ length: 15 }, (_, index) => (
-              <li key={index}>
-                <CurrencyPair
-                  firstCurrency="USD"
-                  secondCurrency="JPY"
-                  price={12.91 * index}
-                  rateChange={index % 2 === 0 ? -0.04 : 0.04}
-                />
-              </li>
-            ))}
-          </ul>
-        </section>
+        <Banner liveRates={liveRates} />
         <section className="w-full max-w-7xl mx-auto p-5">
           <h1 className="uppercase text-white text-lg py-5">check the rate</h1>
           <div className="w-full bg-neutral-700 rounded-xl">
@@ -66,7 +57,7 @@ const App = () => {
               {/* SEND main currency card container*/}
               <div className="w-full items-center flex flex-col gap-5 p-5 md:flex-row">
                 {/* currency container */}
-                <div className="w-full relative bg-neutral-600 border border-neutral-500 rounded-lg flex justify-between items-end p-2 sm:p-7">
+                <div className="w-full relative border rounded-lg flex justify-between items-end p-5 sm:p-7">
                   <div className="space-y-5 mr-5">
                     <h2 className="text-md uppercase">send</h2>
                     <input
@@ -92,7 +83,7 @@ const App = () => {
               {/* RECIEVE main currency card container*/}
               <div className="w-full flex flex-col items-center  gap-5 p-5 md:flex-row  md:py-10">
                 {/* currency container */}
-                <div className="relative w-full max-w-lg bg-neutral-600 border border-neutral-500 rounded-lg flex justify-between items-end p-2 sm:p-7">
+                <div className="relative w-full max-w-lg border rounded-lg flex justify-between items-end p-5 sm:p-7">
                   <div className="space-y-5">
                     <h2 className="text-md uppercase">Recieve</h2>
                     <p className="text-xl font-bold text-lime-500">1,000</p>

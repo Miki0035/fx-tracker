@@ -32,7 +32,7 @@ const CurrencyPair = ({
           alt={positive ? "up arrow" : "down arrow"}
           className={`${positive ? "rotate-180" : "rotate-0"} w-5 h-5`}
         />
-        {positive ? `+${rateChange}%` : `${rateChange}%`}
+        {positive ? `+${price}%` : `${price}%`}
       </span>
     </div>
   );

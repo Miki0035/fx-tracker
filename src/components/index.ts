@@ -10,6 +10,7 @@ import LogConversionSectionTab from "./LogConversionSectionTab";
 import HistorySectionTab from "./HistorySectionTab";
 import HistoryCard from "./HistoryCard";
 import TradingChart from "./TradingChart";
+import Banner from "./Banner";
 export {
     Header,
     CurrencyPair,
@@ -22,5 +23,6 @@ export {
     LogConversionSectionTab,
     HistorySectionTab,
     HistoryCard,
-    TradingChart
+    TradingChart,
+    Banner
 }

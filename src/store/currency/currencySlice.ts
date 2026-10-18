@@ -1,6 +1,7 @@
 import { getCountries } from "@/lib/utils";
-import type { CountryCurrency, ToBeChangedCurrency } from "@/types";
+import type { API, CountryCurrency, ToBeChangedCurrency } from "@/types";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import { fetchLiveRating } from "./currencySelector";
 
 
 type CurrencyState = {
@@ -9,6 +10,10 @@ type CurrencyState = {
     sendSelectedCurrency: CountryCurrency,
     recieveSearchValue: string,
     recieveSelectedCurrency: CountryCurrency
+
+    liveRates: API[],
+    isLoading: boolean,
+    error: string | null
 }
 
 const currencies = getCountries();
@@ -19,8 +24,13 @@ const initialState: CurrencyState = {
     sendSearchValue: "",
     sendSelectedCurrency: currencies.find((currency) => currency.code === "AED")!,
     recieveSearchValue: "",
-    recieveSelectedCurrency: currencies.find((currency) => currency.code === "AR")!
+    recieveSelectedCurrency: currencies.find((currency) => currency.code === "AR")!,
+    liveRates: [],
+    isLoading: false,
+    error: null
 }
+
+
 
 const currencySlice = createSlice({
     name: "currency",
@@ -54,6 +64,22 @@ const currencySlice = createSlice({
                 }
             }
         },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchLiveRating.pending, (state) => {
+            state.isLoading = true;
+            state.error = null;
+        })
+
+            .addCase(fetchLiveRating.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.liveRates = action.payload
+            })
+
+            .addCase(fetchLiveRating.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message ?? "Something went wrong";
+            })
     }
 })
 

@@ -1,4 +1,4 @@
-import { createSelector } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 
 export const sendSelectedQueriedCurrencies = createSelector([
@@ -25,4 +25,14 @@ export const recieveSelectedQueriedCurrencies = createSelector([
         currency.currencyName?.toLowerCase().includes(value) ||
         currency.name?.toLowerCase().includes(value) ||
         currency.code?.toLowerCase().includes(value))
+})
+
+
+export const fetchLiveRating = createAsyncThunk("currency/fetchLiveRating", async () => {
+    const response = await fetch(`${import.meta.env.VITE_API}rates?base=USD`);
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error("Failed to fetch live ratings")
+    }
+    return data;
 })

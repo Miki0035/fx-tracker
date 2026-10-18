@@ -17,3 +17,10 @@ export type TabType = {
     label: string;
     index: number;
 }
+
+export interface API {
+    base: string;
+    date: string;
+    quote: string;
+    rate: number;
+}
