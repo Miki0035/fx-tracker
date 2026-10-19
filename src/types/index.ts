@@ -24,3 +24,10 @@ export interface API {
     quote: string;
     rate: number;
 }
+
+
+export type ConvertRateArgs = {
+    value: number;
+    base: CountryCurrency;
+    quote: CountryCurrency;
+};

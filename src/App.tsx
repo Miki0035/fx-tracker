@@ -10,13 +10,14 @@ import {
 } from "./components";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import {
+  convertRate,
   fetchLiveRating,
   recieveSelectedQueriedCurrencies,
   sendSelectedQueriedCurrencies,
 } from "./store/currency/currencySelector";
 
 import { changeTab } from "./store/tab/tabSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // import upArrow from "@/assets/images/icon-chevron-up.svg";
 // import downArrow from "@/assets/images/icon-chevron-down.svg";
@@ -41,6 +42,31 @@ const App = () => {
   // live rates
   const liveRates = useAppSelector((state) => state.currency.liveRates);
 
+  // to be converted  user input , the actual rate
+  const [conversion, setConversion] = useState({
+    value: "",
+    convertedValue: 0,
+    liveRate: 0,
+  });
+
+  const handleConversion = async () => {
+    if (conversion.value === "") return;
+    if (isNaN(Number(conversion.value))) return;
+
+    try {
+      const result = await dispatch(
+        convertRate(Number(conversion.value)),
+      ).unwrap();
+      setConversion((prev) => ({
+        ...prev,
+        convertedValue: result.convertedValue,
+        liveRate: result.liveRate,
+      }));
+    } catch (error) {
+      console.error("Conversion failed", error);
+    }
+  };
+
   useEffect(() => {
     dispatch(fetchLiveRating());
   }, [dispatch]);
@@ -64,6 +90,12 @@ const App = () => {
                       type="text"
                       name=""
                       id=""
+                      onChange={(e) =>
+                        setConversion((prev) => ({
+                          ...prev,
+                          value: e.target.value,
+                        }))
+                      }
                       className="w-24 max-w-54 text-xl font-bold text-white outline-none border-b-1"
                     />
                   </div>
@@ -76,9 +108,12 @@ const App = () => {
               </div>
 
               {/* UP DOWN ARROW */}
-              <div className="mx-auto p-3 bg-neutral-600 rounded-md border border-neutral-500">
+              <button
+                className="mx-auto p-3 bg-neutral-600 rounded-md border border-neutral-500 hover:cursor-pointer"
+                onClick={handleConversion}
+              >
                 <ArrowUpDown className="text-white md:rotate-90" />
-              </div>
+              </button>
 
               {/* RECIEVE main currency card container*/}
               <div className="w-full flex flex-col items-center  gap-5 p-5 md:flex-row  md:py-10">
@@ -86,7 +121,9 @@ const App = () => {
                 <div className="relative w-full max-w-lg border rounded-lg flex justify-between items-end p-5 sm:p-7">
                   <div className="space-y-5">
                     <h2 className="text-md uppercase">Recieve</h2>
-                    <p className="text-xl font-bold text-lime-500">1,000</p>
+                    <p className="text-xl font-bold text-lime-500">
+                      {conversion.convertedValue}
+                    </p>
                   </div>
                   <Combobox
                     sendSelectedCurrency={recieveSelectedCurrency}
@@ -96,9 +133,11 @@ const App = () => {
                 </div>
               </div>
             </div>
+
             <div className="w-full py-5 md:p-5 mx-auto border-t-1 border-neutral-300 border-dashed md:mx-0 md:flex md:justify-between md:items-center">
               <p className="text-sm md:text-md text-white text-center">
-                <span>1 {sendSelectedCurrency.code}</span> = 0.835{" "}
+                <span>1 {sendSelectedCurrency.code}</span> ={" "}
+                {conversion.liveRate}
                 {recieveSelectedCurrency.code}
               </p>
               <div className="text-sm font-semibold md:text-md flex justify-center items-center gap-5 py-4">

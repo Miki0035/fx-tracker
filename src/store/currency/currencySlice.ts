@@ -22,9 +22,9 @@ const currencies = getCountries();
 const initialState: CurrencyState = {
     allCountryCurrencies: currencies,
     sendSearchValue: "",
-    sendSelectedCurrency: currencies.find((currency) => currency.code === "AED")!,
+    sendSelectedCurrency: currencies.find((currency) => currency.code === "USD")!,
     recieveSearchValue: "",
-    recieveSelectedCurrency: currencies.find((currency) => currency.code === "AR")!,
+    recieveSelectedCurrency: currencies.find((currency) => currency.code === "EUR")!,
     liveRates: [],
     isLoading: false,
     error: null

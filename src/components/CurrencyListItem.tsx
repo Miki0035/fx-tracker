@@ -7,10 +7,17 @@ interface Props {
   flag: string;
   currencyName: string;
   code: string;
+  countryName: string;
   direction: "send" | "recieve";
 }
 
-const CurrencyListItem = ({ flag, currencyName, code, direction }: Props) => {
+const CurrencyListItem = ({
+  flag,
+  currencyName,
+  code,
+  direction,
+  countryName,
+}: Props) => {
   const selectedCurrency = useAppSelector(
     (state) => state.currency.sendSelectedCurrency,
   );
@@ -36,10 +43,8 @@ const CurrencyListItem = ({ flag, currencyName, code, direction }: Props) => {
             src={flag}
             alt={currencyName}
           />
-          <span className="shrink-0 text-white">{code}</span>
-          <span className="min-w-0 truncate text-neutral-200">
-            {currencyName}
-          </span>
+          <span className="shrink-0 text-white">{countryName}</span>
+          <span className="min-w-0 truncate text-neutral-200">{code}</span>
         </div>
         {selectedCurrency.currencyName === currencyName && <Check />}
       </button>

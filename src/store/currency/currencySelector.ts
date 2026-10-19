@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
+import type { ConvertRateArgs } from "@/types";
 
 export const sendSelectedQueriedCurrencies = createSelector([
     (state: RootState) => state.currency.allCountryCurrencies,
@@ -30,9 +31,27 @@ export const recieveSelectedQueriedCurrencies = createSelector([
 
 export const fetchLiveRating = createAsyncThunk("currency/fetchLiveRating", async () => {
     const response = await fetch(`${import.meta.env.VITE_API}rates?base=USD`);
-    const data = await response.json();
     if (!response.ok) {
         throw new Error("Failed to fetch live ratings")
     }
+    const data = await response.json();
     return data;
+})
+
+
+export const convertRate = createAsyncThunk("currency/convert", async (value: number, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState
+    // get currency states
+    const base = state.currency.sendSelectedCurrency;
+    const quote = state.currency.recieveSelectedCurrency;
+
+
+    const response = await fetch(`${import.meta.env.VITE_API}rate/${base.code}/${quote.code}`);
+    if (!response.ok) throw new Error("Failed to convert currencies")
+    const data = await response.json()
+    const convertedValue = value * data.rate;       // base -> quote
+    return {
+        liveRate: data.rate,
+        convertedValue
+    }
 })
