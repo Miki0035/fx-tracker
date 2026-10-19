@@ -100,8 +100,8 @@ const App = () => {
                     />
                   </div>
                   <Combobox
-                    sendSelectedCurrency={sendSelectedCurrency}
-                    sendFilterCurrencies={sendAllCurrencies}
+                    selectedCurrency={sendSelectedCurrency}
+                    filterCurrencies={sendAllCurrencies}
                     direction="send"
                   />
                 </div>
@@ -126,8 +126,8 @@ const App = () => {
                     </p>
                   </div>
                   <Combobox
-                    sendSelectedCurrency={recieveSelectedCurrency}
-                    sendFilterCurrencies={recieveAllCurrencies}
+                    selectedCurrency={recieveSelectedCurrency}
+                    filterCurrencies={recieveAllCurrencies}
                     direction="recieve"
                   />
                 </div>

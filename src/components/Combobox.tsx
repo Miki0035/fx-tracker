@@ -8,21 +8,25 @@ import type { CountryCurrency, ToBeChangedCurrency } from "@/types";
 import { setSearchValue } from "@/store/currency/currencySlice";
 
 interface Props {
-  sendSelectedCurrency: CountryCurrency;
-  sendFilterCurrencies: CountryCurrency[];
+  selectedCurrency: CountryCurrency;
+  filterCurrencies: CountryCurrency[];
   direction: "send" | "recieve";
 }
 
-const Combobox = ({
-  sendSelectedCurrency,
-  sendFilterCurrencies,
-  direction,
-}: Props) => {
+const Combobox = ({ selectedCurrency, filterCurrencies, direction }: Props) => {
   // Redux state changer method
   const dispatch = useAppDispatch();
 
   const [showDropdown, setShowDropdown] = useState(false);
   const dropDownRef = useRef<HTMLDivElement | null>(null);
+
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    const search: ToBeChangedCurrency = {
+      direction,
+      value: event.target.value,
+    };
+    dispatch(setSearchValue(search));
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -41,14 +45,6 @@ const Combobox = ({
     };
   }, []);
 
-  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    const sendSearch: ToBeChangedCurrency = {
-      direction,
-      value: event.target.value,
-    };
-    dispatch(setSearchValue(sendSearch));
-  };
-
   return (
     <div>
       <button
@@ -59,10 +55,10 @@ const Combobox = ({
       >
         <img
           className="size-6 bg-transparent"
-          src={sendSelectedCurrency.flag}
-          alt={sendSelectedCurrency.currencyName}
+          src={selectedCurrency.flag}
+          alt={selectedCurrency.currencyName}
         />
-        <span>{sendSelectedCurrency.code}</span>
+        <span>{selectedCurrency.code}</span>
         <img src={upArrow} alt="up chevron" />
       </button>
       {/* DROPDOWN */}
@@ -87,9 +83,9 @@ const Combobox = ({
         </div>
         {/* Popular */}
         <CategoryList
-          currencies={sendFilterCurrencies}
+          currencies={filterCurrencies}
           category="popular"
-          count={sendFilterCurrencies.length}
+          count={filterCurrencies.length}
           direction={direction}
         />
 

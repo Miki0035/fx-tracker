@@ -25,6 +25,8 @@ const CurrencyListItem = ({
   const dispatch = useAppDispatch();
 
   const handleSelection = () => {
+    console.log(`direction ${direction}`, `value ${code}`);
+
     const selectedCurrency: ToBeChangedCurrency = {
       direction,
       value: code,
@@ -46,6 +48,7 @@ const CurrencyListItem = ({
           <span className="shrink-0 text-white">{countryName}</span>
           <span className="min-w-0 truncate text-neutral-200">{code}</span>
         </div>
+        {}
         {selectedCurrency.currencyName === currencyName && <Check />}
       </button>
     </li>

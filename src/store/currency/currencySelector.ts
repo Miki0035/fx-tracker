@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import type { ConvertRateArgs } from "@/types";
 
 export const sendSelectedQueriedCurrencies = createSelector([
     (state: RootState) => state.currency.allCountryCurrencies,
