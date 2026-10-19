@@ -57,7 +57,7 @@
   --text-xs--letter-spacing: 0px;
 
   /* ANIMATION */
-  --animate-infinite-scroll: infinite-scroll 20s linear infinite;
+  --animate-infinite-scroll: infinite-scroll 900s linear infinite;
   --animate-fade-in: "fade-in 300ms ease-out";
 
   @keyframes infinite-scroll {

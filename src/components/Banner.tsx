@@ -72,9 +72,9 @@ const Banner = ({ liveRates }: Props) => {
           <span className="md:text-2xl"> · </span> live markets
         </p>
       </div>
-      <ul className="flex w-full animate-infinite-scroll">
-        {ratesWithChange.map((rate, index) => (
-          <li key={index}>
+      <ul className="flex w-max animate-infinite-scroll">
+        {[...ratesWithChange, ...ratesWithChange].map((rate, index) => (
+          <li key={index} className="shrink-0">
             <CurrencyPair
               firstCurrency={rate.base}
               secondCurrency={rate.quote}
