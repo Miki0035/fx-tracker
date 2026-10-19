@@ -6,15 +6,21 @@ interface Props {
   liveRates: API[];
 }
 
+type RateChange = {
+  trend: number;
+  rateChangePercentage: number;
+};
+
 const Banner = ({ liveRates }: Props) => {
   const endpoint = import.meta.env.VITE_API;
   // const [bannerRate] = useState<API[]>(liveRates);
-  const [ratesWithChange, setRatesWithChange] = useState<
-    (API & { rateChange: -1 | 0 | 1 })[]
-  >([]);
+  const [ratesWithChange, setRatesWithChange] = useState<(API & RateChange)[]>(
+    [],
+  );
   //   console.log(`banner rate`, liveRates);
 
-  async function calculateRateChange(rate: API) {
+  async function calculateRateChange(rate: API): Promise<RateChange> {
+    // !TODO  DYNAMIC UPDATE TODAY , YESTERDAY
     const today = "2026-10-18";
     const yesterday = "2026-10-17";
     const response = await fetch(
@@ -26,26 +32,28 @@ const Banner = ({ liveRates }: Props) => {
     console.log("historical data", data);
 
     if (data.length < 2) {
-      return 0;
+      return { trend: 0, rateChangePercentage: 0 };
     }
 
     const yesterdayRate = data[0].rate;
     const todayRate = data[1].rate;
+    console.log(`rateChangePercentage sub`, todayRate - yesterdayRate);
+    const rateChangePercentage = (todayRate - yesterdayRate) / 100;
 
-    if (todayRate > yesterdayRate) return 1;
-    if (todayRate < yesterdayRate) return -1;
-    return 0;
+    if (todayRate > yesterdayRate) return { trend: 1, rateChangePercentage };
+    if (todayRate < yesterdayRate) return { trend: -1, rateChangePercentage };
+    return { trend: 0, rateChangePercentage };
   }
 
   useEffect(() => {
     const calculateChanges = async () => {
       const results = await Promise.all(
         liveRates.map(async (rate) => {
-          const rateChange: 1 | -1 | 0 = await calculateRateChange(rate);
+          const rateChange: RateChange = await calculateRateChange(rate);
 
           return {
             ...rate,
-            rateChange,
+            ...rateChange,
           };
         }),
       );
@@ -71,7 +79,8 @@ const Banner = ({ liveRates }: Props) => {
               firstCurrency={rate.base}
               secondCurrency={rate.quote}
               price={rate.rate}
-              rateChange={rate.rateChange}
+              rateChangePercentage={rate.rateChangePercentage.toFixed(4)}
+              trend={rate.trend}
             />
           </li>
         ))}
