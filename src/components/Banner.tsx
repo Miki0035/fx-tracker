@@ -1,5 +1,5 @@
 import type { API } from "@/types";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CurrencyPair from "./CurrencyPair";
 
 interface Props {
@@ -19,7 +19,9 @@ const Banner = ({ liveRates }: Props) => {
   );
   //   console.log(`banner rate`, liveRates);
 
-  async function calculateRateChange(rate: API): Promise<RateChange> {
+  const calculateRateChange = useCallback(async function (
+    rate: API,
+  ): Promise<RateChange> {
     // !TODO  DYNAMIC UPDATE TODAY , YESTERDAY
     const today = "2026-10-18";
     const yesterday = "2026-10-17";
@@ -43,7 +45,7 @@ const Banner = ({ liveRates }: Props) => {
     if (todayRate > yesterdayRate) return { trend: 1, rateChangePercentage };
     if (todayRate < yesterdayRate) return { trend: -1, rateChangePercentage };
     return { trend: 0, rateChangePercentage };
-  }
+  }, []);
 
   useEffect(() => {
     const calculateChanges = async () => {
@@ -63,7 +65,7 @@ const Banner = ({ liveRates }: Props) => {
     if (liveRates.length > 0) {
       calculateChanges();
     }
-  }, [liveRates]);
+  }, [calculateRateChange, liveRates]);
 
   return (
     <section className="w-full flex items-center justify-start bg-neutral-700 overflow-hidden">
