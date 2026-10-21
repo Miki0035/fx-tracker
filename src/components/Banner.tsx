@@ -1,6 +1,7 @@
 import type { API } from "@/types";
 import { useCallback, useEffect, useState } from "react";
 import CurrencyPair from "./CurrencyPair";
+import CurrencyPairSkeleton from "./CurrencyPairSkeleton";
 
 interface Props {
   liveRates: API[];
@@ -13,11 +14,9 @@ type RateChange = {
 
 const Banner = ({ liveRates }: Props) => {
   const endpoint = import.meta.env.VITE_API;
-  // const [bannerRate] = useState<API[]>(liveRates);
   const [ratesWithChange, setRatesWithChange] = useState<(API & RateChange)[]>(
     [],
   );
-  //   console.log(`banner rate`, liveRates);
 
   const calculateRateChange = useCallback(async function (
     rate: API,
@@ -30,8 +29,6 @@ const Banner = ({ liveRates }: Props) => {
     );
     if (!response.ok) throw new Error("Could not get rate changes");
     const data = await response.json();
-
-    console.log("historical data", data);
 
     if (data.length < 2) {
       return { trend: 0, rateChangePercentage: 0 };
@@ -74,19 +71,29 @@ const Banner = ({ liveRates }: Props) => {
           <span className="md:text-2xl"> · </span> live markets
         </p>
       </div>
-      <ul className="flex w-max animate-infinite-scroll">
-        {[...ratesWithChange, ...ratesWithChange].map((rate, index) => (
-          <li key={index} className="shrink-0">
-            <CurrencyPair
-              firstCurrency={rate.base}
-              secondCurrency={rate.quote}
-              price={rate.rate}
-              rateChangePercentage={rate.rateChangePercentage.toFixed(4)}
-              trend={rate.trend}
-            />
-          </li>
-        ))}
-      </ul>
+      {ratesWithChange.length === 0 ? (
+        <ul className="flex w-max">
+          {Array.from({ length: 10 }).map((_, index) => (
+            <li key={index} className="shrink-0">
+              <CurrencyPairSkeleton />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <ul className="flex w-max animate-infinite-scroll">
+          {[...ratesWithChange, ...ratesWithChange].map((rate, index) => (
+            <li key={index} className="shrink-0">
+              <CurrencyPair
+                firstCurrency={rate.base}
+                secondCurrency={rate.quote}
+                price={rate.rate}
+                rateChangePercentage={rate.rateChangePercentage.toFixed(4)}
+                trend={rate.trend}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 };
