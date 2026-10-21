@@ -441,5 +441,6 @@ export function getCountries(): CountryCurrency[] {
 export function showErrorToast(message: string) {
   return toast.error(message, {
     position: "top-center",
+    className: "bg-red-500! text-white! border-red-600!"
   })
 } 
