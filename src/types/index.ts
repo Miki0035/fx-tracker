@@ -1,5 +1,5 @@
 export interface CountryCurrency {
-    name: string
+    countryName: string
     code: string
     currencyName: string
     currencySymbol: string
@@ -9,7 +9,13 @@ export interface CountryCurrency {
 
 
 export interface ToBeChangedCurrency {
-    value: string;
+    code: string;
+    countryName: string;
+    direction: "send" | "recieve";
+}
+
+export interface SearchCurrency {
+    code: string;
     direction: "send" | "recieve";
 }
 

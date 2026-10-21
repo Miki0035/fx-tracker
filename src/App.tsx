@@ -1,4 +1,4 @@
-import { ArrowUpDown, StarIcon } from "lucide-react";
+import { ArrowUpDown, LoaderCircle, StarIcon } from "lucide-react";
 import {
   Banner,
   Combobox,
@@ -18,6 +18,7 @@ import {
 
 import { changeTab } from "./store/tab/tabSlice";
 import { useEffect, useState } from "react";
+import { showErrorToast } from "./lib/utils";
 
 // import upArrow from "@/assets/images/icon-chevron-up.svg";
 // import downArrow from "@/assets/images/icon-chevron-down.svg";
@@ -50,29 +51,55 @@ const App = () => {
   });
 
   const handleConversion = async () => {
-    if (conversion.value === "") return;
-    if (isNaN(Number(conversion.value))) return;
+    if (conversion.value === "") {
+      showErrorToast("Enter price to convert");
+      return;
+    }
+    if (isNaN(Number(conversion.value))) {
+      showErrorToast("Price must be a valid number.");
+      return;
+    }
 
     try {
-      const result = await dispatch(
-        convertRate(Number(conversion.value)),
-      ).unwrap();
-      setConversion((prev) => ({
-        ...prev,
-        convertedValue: result.convertedValue,
-        liveRate: result.liveRate,
-      }));
+      await dispatch(convertRate(Number(conversion.value)));
     } catch (error) {
       console.error("Conversion failed", error);
     }
   };
 
+  //states for fetching live rates
+  const isFetchingLiveRates = useAppSelector(
+    (state) => state.currency.isFetchingLiveRates,
+  );
+  const errorFetchingLiveRates = useAppSelector(
+    (state) => state.currency.errorFetchingLiveRates,
+  );
+
+  // states for converting currencies
+  const converting = useAppSelector(
+    (state) => state.currency.isConvertingRates,
+  );
+  const errorConverting = useAppSelector(
+    (state) => state.currency.errorConvertingRates,
+  );
+  const convertedValue = useAppSelector(
+    (state) => state.currency.convertedRates,
+  );
+
   // Function that mutates state
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    if (errorFetchingLiveRates || errorConverting) {
+      showErrorToast("Something went wrong, please try again");
+      return;
+    }
+    if (errorConverting) {
+      showErrorToast(errorConverting ?? "Something went wrong");
+      return;
+    }
     dispatch(fetchLiveRating());
-  }, [dispatch]);
+  }, [dispatch, errorConverting, errorFetchingLiveRates]);
 
   return (
     <>
@@ -115,7 +142,11 @@ const App = () => {
                 className="mx-auto p-3 bg-neutral-600 rounded-md border border-neutral-500 hover:cursor-pointer"
                 onClick={handleConversion}
               >
-                <ArrowUpDown className="text-white md:rotate-90" />
+                {converting ? (
+                  <LoaderCircle className="text-white animate-spin" />
+                ) : (
+                  <ArrowUpDown className="text-white md:rotate-90" />
+                )}
               </button>
 
               {/* RECIEVE main currency card container*/}
@@ -125,7 +156,7 @@ const App = () => {
                   <div className="space-y-5">
                     <h2 className="text-md uppercase">Recieve</h2>
                     <p className="text-xl font-bold text-lime-500">
-                      {conversion.convertedValue}
+                      {convertedValue.convertedValue.toFixed(5)}
                     </p>
                   </div>
                   <Combobox
@@ -140,7 +171,7 @@ const App = () => {
             <div className="w-full py-5 md:p-5 mx-auto border-t-1 border-neutral-300 border-dashed md:mx-0 md:flex md:justify-between md:items-center">
               <p className="text-sm md:text-md text-white text-center">
                 <span>1 {sendSelectedCurrency.code}</span> ={" "}
-                {conversion.liveRate}
+                {convertedValue.liveRate}
                 {recieveSelectedCurrency.code}
               </p>
               <div className="text-sm font-semibold md:text-md flex justify-center items-center gap-5 py-4">

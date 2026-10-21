@@ -10,7 +10,7 @@ export const sendSelectedQueriedCurrencies = createSelector([
 
     return currencies.filter((currency) =>
         currency.currencyName?.toLowerCase().includes(value) ||
-        currency.name?.toLowerCase().includes(value) ||
+        currency.countryName?.toLowerCase().includes(value) ||
         currency.code?.toLowerCase().includes(value))
 })
 
@@ -23,7 +23,7 @@ export const recieveSelectedQueriedCurrencies = createSelector([
 
     return currencies.filter((currency) =>
         currency.currencyName?.toLowerCase().includes(value) ||
-        currency.name?.toLowerCase().includes(value) ||
+        currency.countryName?.toLowerCase().includes(value) ||
         currency.code?.toLowerCase().includes(value))
 })
 

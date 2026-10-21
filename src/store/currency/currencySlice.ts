@@ -1,7 +1,7 @@
 import { getCountries } from "@/lib/utils";
-import type { API, CountryCurrency, ToBeChangedCurrency } from "@/types";
+import type { API, CountryCurrency, SearchCurrency, ToBeChangedCurrency } from "@/types";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
-import { fetchLiveRating } from "./currencySelector";
+import { convertRate, fetchLiveRating } from "./currencySelector";
 
 
 type CurrencyState = {
@@ -12,8 +12,15 @@ type CurrencyState = {
     recieveSelectedCurrency: CountryCurrency
 
     liveRates: API[],
-    isLoading: boolean,
-    error: string | null
+    isFetchingLiveRates: boolean,
+    errorFetchingLiveRates: string | null
+
+    isConvertingRates: boolean,
+    errorConvertingRates: string | null;
+    convertedRates: {
+        liveRate: number;
+        convertedValue: number;
+    }
 }
 
 const currencies = getCountries();
@@ -25,9 +32,15 @@ const initialState: CurrencyState = {
     sendSelectedCurrency: currencies.find((currency) => currency.code === "USD")!,
     recieveSearchValue: "",
     recieveSelectedCurrency: currencies.find((currency) => currency.code === "EUR")!,
+    // For fetching all live rates
     liveRates: [],
-    isLoading: false,
-    error: null
+    isFetchingLiveRates: false,
+    errorFetchingLiveRates: null,
+    // For converting currencies
+    convertedRates: { liveRate: 0, convertedValue: 0 },
+    isConvertingRates: false,
+    errorConvertingRates: null,
+
 }
 
 
@@ -37,12 +50,12 @@ const currencySlice = createSlice({
     initialState,
     reducers: {
 
-        setSearchValue: (state, action: PayloadAction<ToBeChangedCurrency>) => {
+        setSearchValue: (state, action: PayloadAction<SearchCurrency>) => {
             if (action.payload.direction === "send") {
-                state.sendSearchValue = action.payload.value
+                state.sendSearchValue = action.payload.code
                 return;
             } else {
-                state.recieveSearchValue = action.payload.value
+                state.recieveSearchValue = action.payload.code
                 return;
             }
         },
@@ -50,8 +63,8 @@ const currencySlice = createSlice({
 
 
         changeCurrency: (state, action: PayloadAction<ToBeChangedCurrency>) => {
-            const code = action.payload.value
-            const currency = state.allCountryCurrencies.find((currency) => currency.code === code);
+            const selectedCurrency = action.payload
+            const currency = state.allCountryCurrencies.find((currency) => currency.code === selectedCurrency.code && currency.countryName === selectedCurrency.countryName);
             if (action.payload.direction === "send") {
                 if (currency) {
                     state.sendSelectedCurrency = currency
@@ -66,19 +79,37 @@ const currencySlice = createSlice({
         },
     },
     extraReducers: (builder) => {
+        // fetch live rating thunk operation
         builder.addCase(fetchLiveRating.pending, (state) => {
-            state.isLoading = true;
-            state.error = null;
+            state.isFetchingLiveRates = true;
+            state.errorFetchingLiveRates = null;
         })
 
             .addCase(fetchLiveRating.fulfilled, (state, action) => {
-                state.isLoading = false;
+                state.isFetchingLiveRates = false;
+                state.errorFetchingLiveRates = null;
+
                 state.liveRates = action.payload
             })
 
-            .addCase(fetchLiveRating.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.error.message ?? "Something went wrong";
+            .addCase(fetchLiveRating.rejected, (state) => {
+                state.isFetchingLiveRates = false;
+                state.errorFetchingLiveRates = "Error fetching live rates from API";
+            })
+            // live conversion thunk operation
+            .addCase(convertRate.pending, (state) => {
+                state.isConvertingRates = true;
+                state.errorConvertingRates = null
+            })
+            .addCase(convertRate.fulfilled, (state, action) => {
+                state.isConvertingRates = false;
+                state.errorConvertingRates = null;
+
+                state.convertedRates = action.payload
+            })
+            .addCase(convertRate.rejected, (state) => {
+                state.isConvertingRates = false;
+                state.errorConvertingRates = "Error converting currencies"
             })
     }
 })

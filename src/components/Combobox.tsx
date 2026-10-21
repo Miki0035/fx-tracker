@@ -4,7 +4,7 @@ import { Search } from "lucide-react";
 import CategoryList from "./CategoryList";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useAppDispatch } from "@/hooks/hooks";
-import type { CountryCurrency, ToBeChangedCurrency } from "@/types";
+import type { CountryCurrency, SearchCurrency } from "@/types";
 import { setSearchValue } from "@/store/currency/currencySlice";
 
 interface Props {
@@ -21,9 +21,9 @@ const Combobox = ({ selectedCurrency, filterCurrencies, direction }: Props) => {
   const dropDownRef = useRef<HTMLDivElement | null>(null);
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    const search: ToBeChangedCurrency = {
+    const search: SearchCurrency = {
       direction,
-      value: event.target.value,
+      code: event.target.value,
     };
     dispatch(setSearchValue(search));
   };

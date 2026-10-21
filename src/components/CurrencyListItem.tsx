@@ -33,7 +33,8 @@ const CurrencyListItem = ({
 
     const selectedCurrency: ToBeChangedCurrency = {
       direction,
-      value: code,
+      countryName,
+      code: code,
     };
     dispatch(changeCurrency(selectedCurrency));
   };
@@ -53,8 +54,8 @@ const CurrencyListItem = ({
           <span className="min-w-0 truncate text-neutral-200">{code}</span>
         </div>
         {direction === "send"
-          ? sendCurrency.currencyName === currencyName && <Check />
-          : recieveCurrency.currencyName === currencyName && <Check />}
+          ? sendCurrency.countryName === countryName && <Check />
+          : recieveCurrency.countryName === countryName && <Check />}
       </button>
     </li>
   );

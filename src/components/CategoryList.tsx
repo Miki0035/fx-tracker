@@ -19,9 +19,9 @@ const CategoryList = ({ category, count, currencies, direction }: Props) => {
       <ul>
         {currencies.map((currency) => (
           <CurrencyListItem
-            key={currency.name}
+            key={currency.countryName}
             code={currency.code}
-            countryName={currency.name}
+            countryName={currency.countryName}
             currencyName={currency.currencyName}
             flag={currency.flag}
             direction={direction}
