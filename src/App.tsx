@@ -23,23 +23,23 @@ import { useEffect, useState } from "react";
 // import downArrow from "@/assets/images/icon-chevron-down.svg";
 
 const App = () => {
+  // Filtered recieve and send currencies for combobox
+  const sendAllCurrencies = useAppSelector(sendSelectedQueriedCurrencies);
+  const recieveAllCurrencies = useAppSelector(recieveSelectedQueriedCurrencies);
+
+  // Selected send / recieve currency from combobox
   const sendSelectedCurrency = useAppSelector(
     (state) => state.currency.sendSelectedCurrency,
   );
-
-  const sendAllCurrencies = useAppSelector(sendSelectedQueriedCurrencies);
-
   const recieveSelectedCurrency = useAppSelector(
     (state) => state.currency.recieveSelectedCurrency,
   );
-  const recieveAllCurrencies = useAppSelector(recieveSelectedQueriedCurrencies);
 
+  // Tabs to be shown
   const tabs = useAppSelector((state) => state.tab.tabs);
   const currentTab = useAppSelector((state) => state.tab.currentTab);
 
-  const dispatch = useAppDispatch();
-
-  // live rates
+  // live rates from API
   const liveRates = useAppSelector((state) => state.currency.liveRates);
 
   // to be converted  user input , the actual rate
@@ -66,6 +66,9 @@ const App = () => {
       console.error("Conversion failed", error);
     }
   };
+
+  // Function that mutates state
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchLiveRating());

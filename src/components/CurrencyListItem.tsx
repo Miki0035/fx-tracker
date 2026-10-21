@@ -18,8 +18,12 @@ const CurrencyListItem = ({
   direction,
   countryName,
 }: Props) => {
-  const selectedCurrency = useAppSelector(
+  const sendCurrency = useAppSelector(
     (state) => state.currency.sendSelectedCurrency,
+  );
+
+  const recieveCurrency = useAppSelector(
+    (state) => state.currency.recieveSelectedCurrency,
   );
 
   const dispatch = useAppDispatch();
@@ -48,8 +52,9 @@ const CurrencyListItem = ({
           <span className="shrink-0 text-white">{countryName}</span>
           <span className="min-w-0 truncate text-neutral-200">{code}</span>
         </div>
-        {}
-        {selectedCurrency.currencyName === currencyName && <Check />}
+        {direction === "send"
+          ? sendCurrency.currencyName === currencyName && <Check />
+          : recieveCurrency.currencyName === currencyName && <Check />}
       </button>
     </li>
   );
