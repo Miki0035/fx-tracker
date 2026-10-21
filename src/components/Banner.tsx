@@ -2,6 +2,7 @@ import type { API } from "@/types";
 import { useCallback, useEffect, useState } from "react";
 import CurrencyPair from "./CurrencyPair";
 import CurrencyPairSkeleton from "./CurrencyPairSkeleton";
+import { formatDate } from "@/lib/utils";
 
 interface Props {
   liveRates: API[];
@@ -13,7 +14,6 @@ type RateChange = {
 };
 
 const Banner = ({ liveRates }: Props) => {
-  const endpoint = import.meta.env.VITE_API;
   const [ratesWithChange, setRatesWithChange] = useState<(API & RateChange)[]>(
     [],
   );
@@ -21,11 +21,17 @@ const Banner = ({ liveRates }: Props) => {
   const calculateRateChange = useCallback(async function (
     rate: API,
   ): Promise<RateChange> {
-    // !TODO  DYNAMIC UPDATE TODAY , YESTERDAY
-    const today = "2026-10-18";
-    const yesterday = "2026-10-17";
+    const endpoint = import.meta.env.VITE_API;
+
+    const today = new Date();
+    const formattedToday = formatDate(today);
+
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const formattedYesterday = formatDate(yesterday);
+
     const response = await fetch(
-      `${endpoint}rates?base=${rate.base}&quotes=${rate.quote}&from=${yesterday}&to=${today}`,
+      `${endpoint}rates?base=${rate.base}&quotes=${rate.quote}&from=${formattedYesterday}&to=${formattedToday}`,
     );
     if (!response.ok) throw new Error("Could not get rate changes");
     const data = await response.json();
@@ -36,7 +42,6 @@ const Banner = ({ liveRates }: Props) => {
 
     const yesterdayRate = data[0].rate;
     const todayRate = data[1].rate;
-    console.log(`rateChangePercentage sub`, todayRate - yesterdayRate);
     const rateChangePercentage = (todayRate - yesterdayRate) / 100;
 
     if (todayRate > yesterdayRate) return { trend: 1, rateChangePercentage };

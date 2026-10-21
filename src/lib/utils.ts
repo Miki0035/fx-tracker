@@ -443,4 +443,10 @@ export function showErrorToast(message: string) {
     position: "top-center",
     className: "bg-red-500! text-white! border-red-600!"
   })
-} 
+}
+
+
+
+export function formatDate(date: Date) {
+  return date.toISOString().split("T")[0];
+}

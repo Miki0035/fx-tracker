@@ -68,9 +68,6 @@ const App = () => {
   };
 
   //states for fetching live rates
-  const isFetchingLiveRates = useAppSelector(
-    (state) => state.currency.isFetchingLiveRates,
-  );
   const errorFetchingLiveRates = useAppSelector(
     (state) => state.currency.errorFetchingLiveRates,
   );
